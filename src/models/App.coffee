@@ -4,4 +4,4 @@ class window.App extends Backbone.Model
     @set 'deck', deck = new Deck()
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
-    @set 'game', new Game(deck, (@get 'playerHand'), (@get 'dealerHand')) 
+    @set 'game', new Game(deck, (@get 'playerHand'), (@get 'dealerHand'))

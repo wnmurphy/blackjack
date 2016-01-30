@@ -11,10 +11,17 @@ class window.AppView extends Backbone.View
 
   initialize: ->
     @render()
+    game = @model.get 'game'
+    game.on 'reset', =>
+      @render()
+      # get Game's new playerHand
+      # update HandView's playerHand to new one
+      # get Game's new dealerHand
+      # update HandView's dealerHand to new one
 
   render: ->
     @$el.children().detach()
     @$el.html @template()
-    @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
-    @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
-
+    game = @model.get 'game' 
+    @$('.player-hand-container').html new HandView(collection: game.get 'playerHand').el
+    @$('.dealer-hand-container').html new HandView(collection: game.get 'dealerHand').el

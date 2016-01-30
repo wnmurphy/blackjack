@@ -4,7 +4,11 @@ class window.Hand extends Backbone.Collection
   initialize: (array, @deck, @isDealer) ->
 
   hit: ->
-    @add(@deck.pop())
+    hitCard = @deck.pop()
+    @add(hitCard)
+    if @scores()[0] > 21
+      @bust()
+    hitCard
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
@@ -20,7 +24,9 @@ class window.Hand extends Backbone.Collection
     # when there is an ace, it offers you two scores - the original score, and score + 10.
     [@minScore(), @minScore() + 10 * @hasAce()]
 
+  bust: ->
+    @trigger 'bust'
 
   # Broadcast a blackjack event when this hands score is 21
-  # Broadcast a bust event when detect when this hand's score is over 21
-  # Broadcast a stand event
+  
+  # Broadcast a bust event for all hands when detect when this hand's score is over 21

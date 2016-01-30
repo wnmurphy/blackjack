@@ -57,6 +57,40 @@ describe 'game', ->
           .be
           .equal 1
 
+      it 'should reset game after bust', ->
+        game.get 'playerHand' 
+          .trigger 'bust'
+        deck = game.get 'deck'
+        expect deck.length
+          .to
+          .be
+          .equal 48
+        expect (game.get "playerHand").length
+          .to
+          .be
+          .equal 2
+        expect (game.get "dealerHand").length
+          .to
+          .be
+          .equal 2
+
+      it 'should trigger a bust event if score is over 21', ->
+        pHand = game.get 'playerHand'
+        sinon.spy(pHand, "bust")
+        pHand.hit() while pHand.scores()[0] < 21
+        
+        expect pHand.bust.callCount
+          .to
+          .be
+          .equal 1
+
+return
+        # get hand, set score to 22, 
+        # check that that hand's bust method was called
+
+
+
+
 
 
 # obj

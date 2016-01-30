@@ -13,3 +13,7 @@ class window.HandView extends Backbone.View
     @$el.append @collection.map (card) ->
       new CardView(model: card).$el
     @$('.score').text @collection.scores()[0]
+
+    # on bust, update view
+    # Game switches hands
+    # HandView needs event listener for 'bust', then re-render
