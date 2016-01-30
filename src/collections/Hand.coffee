@@ -21,3 +21,6 @@ class window.Hand extends Backbone.Collection
     [@minScore(), @minScore() + 10 * @hasAce()]
 
 
+  # Broadcast a blackjack event when this hands score is 21
+  # Broadcast a bust event when detect when this hand's score is over 21
+  # Broadcast a stand event
