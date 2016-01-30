@@ -6,18 +6,17 @@ class window.AppView extends Backbone.View
   '
 
   events:
-    'click .hit-button': -> @model.get('playerHand').hit()
+    'click .hit-button': -> 
+      @model.get('playerHand').hit()
+      @model.get('playerHand').handleScore()
+
     'click .stand-button': -> @model.get('playerHand').stand()
 
   initialize: ->
     @render()
     game = @model.get 'game'
     game.on 'reset', =>
-      @render()
-      # get Game's new playerHand
-      # update HandView's playerHand to new one
-      # get Game's new dealerHand
-      # update HandView's dealerHand to new one
+      @render() 
 
   render: ->
     @$el.children().detach()

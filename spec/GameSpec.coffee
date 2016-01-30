@@ -18,6 +18,11 @@ describe 'game', ->
   describe 'game rules', ->
 
     describe 'busting', ->
+     
+      beforeEach ->
+        game = app.get "game"
+        game.resetGame()
+        
       it 'should call handleBust when either hand busts', ->
         sinon.spy(game, "handleBust")
 
@@ -77,46 +82,56 @@ describe 'game', ->
       it 'should trigger a bust event if score is over 21', ->
         pHand = game.get 'playerHand'
         sinon.spy(pHand, "bust")
-        pHand.hit() while pHand.scores()[0] < 21
-        
+
+        pHandCount = pHand.bust.callCount
+        card1 = new Card({rank:10, suit:0})
+        card2 = new Card({rank:10, suit:1})
+        pHand.add([card1, card2])
+        pHand.hit()
         expect pHand.bust.callCount
+          .to
+          .be
+          .equal pHandCount+1
+        return
+
+    describe 'stand', ->
+      it 'should call handleStand when either player stands', ->
+        sinon.spy(game, "handleStand")
+
+        # trigger stand on playerHand
+        game.get 'playerHand' 
+          .trigger 'stand'
+        expect game.handleStand.callCount
+          .to
+          .be
+          .equal 1 
+
+        # trigger stand on dealerHand
+        game.get 'dealerHand'
+          .trigger 'stand'
+        expect game.handleStand.callCount 
+          .to
+          .be
+          .equal 2
+
+      # handle playerStand
+      it 'should call playDealerTurn when player stands', ->
+        dealer = game.get 'dealerHand'
+        sinon.spy(dealer, "playDealerTurn")
+
+        game.get 'playerHand' 
+          .trigger 'stand'
+        expect dealer.playDealerTurn.callCount
           .to
           .be
           .equal 1
 
-return
-        # get hand, set score to 22, 
-        # check that that hand's bust method was called
+      it 'should call compareScores when dealer stands', ->
+        sinon.spy(game, "compareScores")
 
-
-
-
-
-
-# obj
-#  .func1 "aaa"
-#  .func2 "bbb"
-
-# obj.func1("aaa").func2("bbb");
-
-###
-
-it("should have a step function that makes its node blink", function() {
-    sinon.spy(blinkyDancer.$node, 'toggle');
-    blinkyDancer.step();
-    expect(blinkyDancer.$node.toggle.called).to.be.true;
-  });
-
-  describe("dance", function(){
-    it("should call step at least once per second", function(){
-      sinon.spy(blinkyDancer, "step");
-      expect(blinkyDancer.step.callCount).to.be.equal(0);
-      clock.tick(timeBetweenSteps); // ? it seems an extra tick is necessary...
-      clock.tick(timeBetweenSteps);
-
-      expect(blinkyDancer.step.callCount).to.be.equal(1);
-
-      clock.tick(timeBetweenSteps);
-      expect(blinkyDancer.step.callCount).to.be.equal(2);
-    });
-  });###
+        game.get 'dealerHand' 
+          .trigger 'stand'
+        expect game.compareScores.callCount
+          .to
+          .be
+          .equal 1

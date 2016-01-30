@@ -15,14 +15,39 @@ class window.Game extends Backbone.Model
       .on 'bust', => 
         @handleBust 'dealer'
 
+     @get 'playerHand' 
+      .on 'stand', => 
+        @handleStand 'player'
 
-# Take a parameter (buster), if player declare dealer winner, else declare player winner.
+    @get 'dealerHand' 
+      .on 'stand', => 
+        @handleStand 'dealer'
+
+# If player declare dealer winner, else declare player winner.
   handleBust: (who) ->
     if who is 'player'
       @dealerWins()
     else 
       @playerWins() 
 
+  handleStand: (who) ->
+    if who is 'player'
+      @get 'dealerHand'
+        .playDealerTurn()
+    else 
+      @compareScores()
+
+  compareScores: ->
+    playerBestScore = get 'playerHand'
+                        .bestScore()
+    dealerBestScore = get 'dealerHand'
+                        .bestScore()
+    if playerBestScore < dealerBestScore
+      @dealerWins()
+    else if playerBestScore > dealerBestScore
+      @playerWins()
+    else
+      @push()
 
 # When player busts, declare dealer winner
   playerWins: ->
@@ -32,6 +57,11 @@ class window.Game extends Backbone.Model
 # When dealer busts, declare player winner  
   dealerWins: ->
     alert('Womp womp womp')
+    @resetGame()
+
+# Rest game if tie
+  push: ->
+    alert("It's a tie!")
     @resetGame()
 
 # Create new deck, redeal playerHand and dealerHand
