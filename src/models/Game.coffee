@@ -23,6 +23,14 @@ class window.Game extends Backbone.Model
       .on 'stand', => 
         @handleStand 'dealer'
 
+    @get 'playerHand' 
+      .on 'blackJack', => 
+        @handleBlackJack 'player'
+
+    @get 'dealerHand' 
+      .on 'blackJack', => 
+        @handleBlackJack 'dealer'
+
 # If player declare dealer winner, else declare player winner.
   handleBust: (who) ->
     if who is 'player'
@@ -37,10 +45,16 @@ class window.Game extends Backbone.Model
     else 
       @compareScores()
 
+  handleBlackJack: (who) ->
+    if who is 'player'
+      @playerWins()
+    else 
+      @dealerWins()
+
   compareScores: ->
-    playerBestScore = get 'playerHand'
+    playerBestScore = @get 'playerHand'
                         .bestScore()
-    dealerBestScore = get 'dealerHand'
+    dealerBestScore = @get 'dealerHand'
                         .bestScore()
     if playerBestScore < dealerBestScore
       @dealerWins()
@@ -85,7 +99,3 @@ class window.Game extends Backbone.Model
       .dealDealer(@get 'dealerHand')
 
     @trigger 'reset'
-
-  # Write tests for standing
-  # Broadcast a stand event
-  # Write logic for stand event > dealer's turn

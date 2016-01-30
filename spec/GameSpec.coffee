@@ -88,6 +88,7 @@ describe 'game', ->
         card2 = new Card({rank:10, suit:1})
         pHand.add([card1, card2])
         pHand.hit()
+        pHand.handleScore()
         expect pHand.bust.callCount
           .to
           .be
@@ -97,22 +98,23 @@ describe 'game', ->
     describe 'stand', ->
       it 'should call handleStand when either player stands', ->
         sinon.spy(game, "handleStand")
-
+        handleStandCall = game.handleStand.callCount
         # trigger stand on playerHand
         game.get 'playerHand' 
           .trigger 'stand'
         expect game.handleStand.callCount
           .to
           .be
-          .equal 1 
+          .equal handleStandCall + 1 
 
+        handleStandCall = game.handleStand.callCount
         # trigger stand on dealerHand
         game.get 'dealerHand'
           .trigger 'stand'
         expect game.handleStand.callCount 
           .to
           .be
-          .equal 2
+          .equal handleStandCall + 1
 
       # handle playerStand
       it 'should call playDealerTurn when player stands', ->

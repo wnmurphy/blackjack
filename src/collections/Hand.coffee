@@ -9,9 +9,12 @@ class window.Hand extends Backbone.Collection
     hitCard
 
   handleScore: ->
+    if @scores().indexOf(21) > -1
+      @blackJack()
+      return
     if @scores()[0] > 21
       @bust()
-    if @scores()[0] <=17 and @isDealer
+    if @scores()[0] >= 17 and @isDealer
       @stand()
 
   bestScore: ->
@@ -37,9 +40,12 @@ class window.Hand extends Backbone.Collection
   stand: ->
     @trigger 'stand'
 
+  blackJack: ->
+    @trigger 'blackJack'
+
   playDealerTurn: ->
     @hit() while @scores()[0] < 18
-    @handleScore
+    @handleScore()
 
-
+  # fix Game.compareScore
   # Broadcast a blackjack event when this hands score is 21
