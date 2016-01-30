@@ -2,10 +2,14 @@ class window.Hand extends Backbone.Collection
   model: Card
 
   initialize: (array, @deck, @isDealer) ->
+    @chips = 10
+    @bet = 1
 
   hit: ->
+    cacheBet = $('input').val()
     hitCard = @deck.pop()
     @add(hitCard)
+    @lockInBet(cacheBet)
     hitCard
 
   handleScore: ->
@@ -38,14 +42,20 @@ class window.Hand extends Backbone.Collection
     @trigger 'bust'
 
   stand: ->
+    @lockInBet()
     @trigger 'stand'
+
+  lockInBet: (cacheBet) ->
+    @bet = cacheBet || $('input').val()
+    @trigger 'lock'
 
   blackJack: ->
     @trigger 'blackJack'
 
   playDealerTurn: ->
+    @at(0)
+      .flip()
     @hit() while @scores()[0] < 18
     @handleScore()
 
-  # fix Game.compareScore
-  # Broadcast a blackjack event when this hands score is 21
+# if bet > chips, alert "too poor, reduce bet"

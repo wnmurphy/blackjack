@@ -66,11 +66,13 @@ class window.Game extends Backbone.Model
 # When player busts, declare dealer winner
   playerWins: ->
     alert('You win!')
+    @settleBets('player')
     @resetGame()
 
 # When dealer busts, declare player winner  
   dealerWins: ->
     alert('Womp womp womp')
+    @settleBets('dealer')
     @resetGame()
 
 # Rest game if tie
@@ -99,3 +101,12 @@ class window.Game extends Backbone.Model
       .dealDealer(@get 'dealerHand')
 
     @trigger 'reset'
+
+  settleBets: (winner) ->
+    player = @get 'playerHand'
+    player.chips -= +player.bet if winner is 'dealer'
+    player.chips += +player.bet if winner is 'player'
+    if player.chips < 1 
+      alert("Y'all are broke. Here's 10 chips on us.")
+      player.chips = 10
+    player.bet = 1

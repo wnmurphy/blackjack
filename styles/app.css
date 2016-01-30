@@ -8,9 +8,23 @@
 }
 
 .covered {
-  background-color: black;
+  background-image: url('../img/card-back.png');
+  background-size: cover;
+  color: rgba(0, 0, 0, 0);
 }
 
 .hand {
   overflow: auto;
+}
+
+.placeBet{
+  margin-bottom: 3px;
+}
+
+.bet{
+  margin-bottom: 3px;
+}
+
+input{
+  margin-bottom: 3px;
 }
