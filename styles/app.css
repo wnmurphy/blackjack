@@ -2,6 +2,10 @@
   font-family: 'Droid Sans Mono';
 }
 
+body {
+  background: url('../img/wood.jpg');
+  background-size: contain;
+}
 .card {
   float: left;
   border: solid 1px black;
@@ -27,4 +31,26 @@
 
 input{
   margin-bottom: 3px;
+  min-width: 200px;
+  min-height: 50px;
+  font-size: 1.75em;
+}
+
+.app {
+  width: 50%;
+  margin: auto;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  background-image: url('../img/table3.jpg');
+  background-size: cover;
+}
+
+button {
+  min-width: 100px;
+  height: 75px;
+  font-size: 1.75em;
+  background-color: #8f2d12;
+  border-radius: 5px;
+  color: #EDF5EF;
 }
