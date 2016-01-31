@@ -16,9 +16,9 @@ class window.Hand extends Backbone.Collection
     if @scores().indexOf(21) > -1
       @blackJack()
       return
-    if @scores()[0] > 21
+    else if @scores()[0] > 21
       @bust()
-    if @scores()[0] >= 17 and @isDealer
+    else if @scores()[0] >= 17 and @isDealer
       @stand()
 
   bestScore: ->

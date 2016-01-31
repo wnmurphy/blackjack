@@ -65,20 +65,26 @@ class window.Game extends Backbone.Model
 
 # When player busts, declare dealer winner
   playerWins: ->
-    alert('You win!')
-    @settleBets('player')
-    @resetGame()
+    setTimeout => 
+      alert('You win!')
+      @settleBets('player')
+      @resetGame()
+    , 100
 
 # When dealer busts, declare player winner  
   dealerWins: ->
-    alert('Womp womp womp')
-    @settleBets('dealer')
-    @resetGame()
+    setTimeout =>
+      alert('Womp womp womp')
+      @settleBets('dealer')
+      @resetGame()
+    , 100
 
 # Rest game if tie
   push: ->
-    alert("It's a tie!")
-    @resetGame()
+    setTimeout =>
+      alert("It's a tie!")
+      @resetGame()
+    , 100
 
 # Create new deck, redeal playerHand and dealerHand
   resetGame: ->
